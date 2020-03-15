@@ -1,0 +1,28 @@
+apply plugin: 'groovy'
+apply plugin: 'application'
+
+mainClassName = 'demo.HelloWorld'
+
+defaultTasks 'run'
+
+repositories {
+    maven {
+        url 'http://129.0.3.135:28000/maven2/'
+    }
+}
+
+ext.groovy_version = '2.3.11'
+
+dependencies {
+  compile "org.codehaus.groovy:groovy-all:$groovy_version"
+  testCompile 'junit:junit:4.12'
+}
+
+jar {
+  manifest { attributes 'Main-Class': 'demo.HelloWorld' }
+  from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = "4.6"
+}
